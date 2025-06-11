@@ -3,7 +3,10 @@
     "builds": [
         {
             "src": "Campfire.py",
-            "use": "python3 Campfire.py && npx prisma generate"
+            "use": "@vercel/python",
+            "config": {
+                "startCommand": "python3 Campfire.py && npx prisma generate"
+            }
         }
     ],
     "routes": [
