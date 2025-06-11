@@ -1,0 +1,29 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="resources/styles.css">
+    <link rel="shortcut icon" href="resources/favicon.ico" type="image/x-icon">
+    <title>Campfire - Login</title>
+</head>
+<body style="overflow: hidden;">
+    <main>
+        <img src="resources/favicon.ico" alt="" class="login-page-icon">
+        <h1 class="login-page-title">Campfire</h1>
+        <div class="login-box">
+            <h1>Login</h1>
+            <div class="login-error-box" style="display: none;">
+                <p class="login-error-text"></p>
+            </div>
+            <input type="text" class="login-box-username" placeholder="Username" required>
+            <input type="password" class="login-box-password" placeholder="Password" required>
+            <button class="login-box-button">Login</button>
+            <a href="/signup">Don't have an account? Create one now!</a>
+        </div>
+
+        <div class="redirect-animation"></div>
+    </main>
+
+    <script src="resources/login.js" type="module"></script>
+</body>
+</html>
