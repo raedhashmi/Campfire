@@ -3,6 +3,7 @@
         "postinstall": "npx prisma generate"
     },
     "devDependencies": {
-        "prisma": "^5.14.0"
+        "prisma": "^6.9.0",
+        "@prisma/client": "^6.9.0"
     }
 }
