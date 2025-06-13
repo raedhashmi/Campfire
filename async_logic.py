@@ -9,7 +9,7 @@ async def disconnect_db():
     await db.disconnect()
 
 async def create_user_in_db(username: str, password: str):
-    res = await db.user.create(
+    res = await db.users.create(
         data={
             'username': username,
             'password': password,
@@ -19,7 +19,7 @@ async def create_user_in_db(username: str, password: str):
     return 200
 
 async def verify_user(username: str, password: str):
-    user = await db.user.find_first(
+    user = await db.users.find_first(
         where={
             "username": username,
             "password": password
