@@ -1,4 +1,4 @@
-from prisma import Prisma
+from src.generated import Prisma
 
 db = Prisma()
 

@@ -48,7 +48,10 @@ def create_user():
 
     user = loop.run_until_complete(create_user_in_db(username, password))
 
-    return user
+    if user == 200:
+        return jsonify({"status": "success"}), 200
+    else:
+        return jsonify({"status": "error", "message": "User creation failed"}), 400
 
 if __name__ == '__main__':
     print("\033[38;5;208mLighting the Campfire...\033[0m")

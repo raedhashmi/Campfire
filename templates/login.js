@@ -6,8 +6,9 @@ const loginBoxPassword = document.querySelector('.login-box-password');
 const errorBox = document.querySelector('.login-error-box');
 const errorBoxText = document.querySelector('.login-error-text');
 const loginButton = document.querySelector('.login-box-button');
+const redirectAnimation = document.querySelector('.redirect-animation');
 
-loginButton.addEventListener('click', async () => {
+loginButton.addEventListener('click', () => {
     if (loginBoxUsername.value === '' || loginBoxPassword.value === '') {
         loginBox.style.height = '56%'
         loginPageIcon.style.top = '18%'
@@ -16,28 +17,53 @@ loginButton.addEventListener('click', async () => {
         errorBoxText.innerHTML = 'Please fill out all fields';
     } else {
         loginButton.disabled = true;
-        const res = await fetch('/verify_login', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-            username: loginBoxUsername.value,
-            password: loginBoxPassword.value
-        })
-        });
-        const text = await res.text();
-        if (res.ok) {
-            redirectAnimation.style.animation = 'drop 1s linear'
-            setTimeout(() => {
-                window.location.href = '/home';
-            }, 2000);
-        } else if (res.status === 404) {
-            loginBox.style.height = '56%'
-            loginPageIcon.style.top = '18%'
-            loginPageTitle.style.top = '29%';
-            errorBox.style.display = 'block';
-            errorBoxText.innerHTML = 'No account found.';
-        }
+        loginButton.innerHTML = '<img src="resources/loading.png" style="background-color: transparent; height: 20px; width: auto;">';
+        loginButton.style.cursor = 'not-allowed';
+        loginBoxUsername.disabled = true;
+        loginBoxPassword.disabled = true;
+        loginBoxUsername.style.cursor = 'not-allowed';
+        loginBoxPassword.style.cursor = 'not-allowed';
+        loginBoxUsername.style.backgroundColor = '#666';
+        loginBoxPassword.style.backgroundColor = '#666';
+        loginBox.style.height = '52%'
+        loginPageIcon.style.top = '20%'
+        loginPageTitle.style.top = '26%';
+        errorBox.style.display = 'none';
+        setTimeout(async () => {
+            const res = await fetch('/verify_login', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                username: loginBoxUsername.value,
+                password: loginBoxPassword.value
+            })
+            });
+            const text = await res.text();
+            if (res.ok) {
+                const redirectAnim = document.querySelector('.redirect-animation');
+                redirectAnim.style.animation = 'drop 2s ease-in-out forwards';
+                // Redirect when animation is 75% done (1.5s into 2s animation)
+                setTimeout(() => {
+                    window.location.href = '/home';
+                }, 1000);
+            } else if (res.status === 404) {
+                loginButton.disabled = false;
+                loginButton.style.cursor = 'pointer';
+                loginBoxUsername.disabled = false;
+                loginBoxPassword.disabled = false;
+                loginBoxUsername.style.cursor = 'text';
+                loginBoxPassword.style.cursor = 'text';
+                loginBoxUsername.style.backgroundColor = '#333';
+                loginBoxPassword.style.backgroundColor = '#333';
+                loginButton.innerHTML = 'Login';
+                loginBox.style.height = '56%'
+                loginPageIcon.style.top = '18%'
+                loginPageTitle.style.top = '29%';
+                errorBox.style.display = 'block';
+                errorBoxText.innerHTML = 'No account found.';
+            }
+        }, 500)
     }
 });
