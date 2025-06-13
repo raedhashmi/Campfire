@@ -8,7 +8,7 @@ generator client {
     recursive_type_depth = 5
 }
 
-model user {
+model users {
     id         String  @id @default(uuid())
     username   String  @unique
     password   String  
