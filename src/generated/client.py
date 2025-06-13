@@ -88,7 +88,7 @@ log: logging.Logger = logging.getLogger(__name__)
 SCHEMA_PATH = Path('C:/Users/lubna/Documents/PythonStuff/Campfire/prisma/schema.prisma')
 PACKAGED_SCHEMA_PATH = Path(__file__).parent.joinpath('schema.prisma')
 ENGINE_TYPE: EngineType = EngineType.binary
-BINARY_PATHS = model_parse(BinaryPaths, {'queryEngine': {'windows': 'C:\\Users\\lubna\\.cache\\prisma-python\\binaries\\5.17.0\\393aa359c9ad4a4bb28630fb5613f9c281cde053\\node_modules\\prisma\\query-engine-windows.exe'}, 'introspectionEngine': {}, 'migrationEngine': {}, 'libqueryEngine': {}, 'prismaFmt': {}})
+BINARY_PATHS = model_parse(BinaryPaths, {'queryEngine': {'windows': 'C:\\Users\\lubna\\AppData\\Local\\npm-cache\\_npx\\55ad0b431757dc30\\node_modules\\prisma\\query-engine-windows.exe'}, 'introspectionEngine': {}, 'migrationEngine': {}, 'libqueryEngine': {}, 'prismaFmt': {}})
 
 
 class Prisma(AsyncBasePrisma):
