@@ -1,7 +1,6 @@
 from flask import Flask, send_file, request, jsonify
 from async_logic import create_user_in_db, verify_user, connect_db, disconnect_db
 import asyncio
-import webview
 import time
 
 app = Flask(__name__)
@@ -57,9 +56,7 @@ if __name__ == '__main__':
     print("\033[38;5;208mLighting the Campfire...\033[0m")
     time.sleep(1)
     print("\033[94mCampfire lit at https://localhost:3000\033[0m")
-
-    window = webview.create_window("Campfire", app, fullscreen=True, resizable=True, frameless=True, http_port=3000)
-    webview.start(http_port=3000)
+    app.run(host='localhost', port=3000)
     loop.run_until_complete(disconnect_db())
     loop.close()
     print("\033[38;5;208mCampfire extinguished!\033[0m")
