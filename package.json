@@ -1,9 +1,0 @@
-{
-    "scripts": {
-        "postinstall": "python -m prisma generate"
-    },
-    "devDependencies": {
-        "prisma": "^6.9.0",
-        "@prisma/client": "^6.9.0"
-    }
-}
