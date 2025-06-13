@@ -5,6 +5,7 @@ datasource db {
 
 generator client {
     provider = "prisma-client"
+    output   = "../src/generated"
     recursive_type_depth = 5
 }
 
