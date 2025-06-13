@@ -1,6 +1,6 @@
 {
     "scripts": {
-        "postinstall": "npx prisma generate"
+        "postinstall": "prisma generate"
     },
     "devDependencies": {
         "prisma": "^6.9.0",
