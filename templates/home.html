@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Campfire - Chat</title>
+    <link rel="stylesheet" href="resources/styles.css" />
+    <link rel="shortcut icon" href="resources/favicon.ico" type="image/x-icon" />
+</head>
+<body>
+    <main>
+        <nav class="nav-bar">
+            <img src="resources/favicon.ico" class="nav-logo">
+            <h1 class="nav-title">Campfire</h1>
+
+            <button class="user-avatar-btn" onclick="location.href='/settings'">
+                <span class="user-avatar"></span>
+            </button>
+        </nav>
+
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <input type="text" id="search" placeholder="Search..." class="sidebar-search">
+                <button class="sidebar-add-chat-btn" onclick="addChat()">+</button>
+            </div>
+
+            <div class="chats">
+                <div class="chat-item">
+                    <img src="resources/authorPfp.png" class="chat-avatar">
+                    <h3 class="chat-name">raedh</h3>
+                    <p class="chat-role">admin</p>
+                </div>
+
+                <div class="chats-no-chats-found">No chats here.</div>
+            </div>
+        </div>
+    </main>
+    <script src="resources/home.js"></script>
+</body>
+</html>

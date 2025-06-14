@@ -47,6 +47,8 @@ loginButton.addEventListener('click', () => {
                 // Redirect when animation is 75% done (1.5s into 2s animation)
                 setTimeout(() => {
                     window.location.href = '/home';
+                    localStorage.setItem('loggedIn', 'true');
+                    localStorage.setItem('username', loginBoxUsername.value);
                 }, 1000);
             } else if (res.status === 404) {
                 loginButton.disabled = false;

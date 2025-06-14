@@ -6,9 +6,8 @@ const loginScreen = document.querySelector('.login-screen')
 const signupScreen = document.querySelector('.signup-screen')
 const accountsScreen = document.querySelector('.accounts-screen')
 const loggedIn = localStorage.getItem('loggedIn');
-const startUp = true;
 
-if (startUp === true) {
+if (loggedIn === 'false' || loggedIn == null) {
     document.addEventListener('DOMContentLoaded', () => {
         startScreen.style.display = 'block';
         setTimeout(() => {
@@ -34,11 +33,8 @@ if (startUp === true) {
             }, 13000)
         }, 2000)
     })
-} else if (startUp === false) {
-    if (loggedIn === 'false' || loggedIn == null) {
-        accountsScreen.style.display = 'block';
-        signupScreen.style.display = 'block';
-    }
+} else if (loggedIn === 'true') {
+    window.location.href = '/home';
 }
 
 document.addEventListener('keydown', (e) => {

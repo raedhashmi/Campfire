@@ -53,6 +53,14 @@ def create_user():
     else:
         return jsonify({"status": "error", "message": "User creation failed"}), 400
 
+@app.route('/home')
+def home():
+    return send_file('templates/home.html')
+
+@app.route('/settings')
+def settings():
+    return send_file('templates/settings.html')
+
 if __name__ == '__main__':
     print("\033[38;5;208mLighting the Campfire...\033[0m")
     time.sleep(1)
