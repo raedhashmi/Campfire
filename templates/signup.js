@@ -8,6 +8,11 @@ const errorBoxText = document.querySelector('.signup-error-text');
 const signupButton = document.querySelector('.signup-box-button');
 const redirectAnimation = document.querySelector('.redirect-animation');
 
+redirectAnimation.style.animation = 'afterDrop 1s ease-in-out forwards';
+setTimeout(() => {
+    redirectAnimation.style.animation = 'none';
+}, 1000);
+
 signupButton.addEventListener('click', () => {
     if (signupBoxUsername.value === '' || signupBoxPassword.value === '') {
         signupBox.style.height = '56%'
@@ -44,7 +49,7 @@ signupButton.addEventListener('click', () => {
                 const text = await res.text();
                 if (res.ok) {
                     const redirectAnim = document.querySelector('.redirect-animation');
-                    redirectAnim.style.animation = 'drop 2s ease-in-out forwards';
+                    redirectAnim.style.animation = 'drop 1s ease-in-out forwards';
                     setTimeout(() => {
                         window.location.href = '/login';
                     }, 1000);

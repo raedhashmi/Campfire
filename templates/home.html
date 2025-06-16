@@ -7,13 +7,13 @@
     <link rel="stylesheet" href="resources/styles.css" />
     <link rel="shortcut icon" href="resources/favicon.ico" type="image/x-icon" />
 </head>
-<body>
+<body style="overflow: hidden;" onload="renderChats()">
     <main>
         <nav class="nav-bar">
             <img src="resources/favicon.ico" class="nav-logo">
             <h1 class="nav-title">Campfire</h1>
 
-            <button class="user-avatar-btn" onclick="location.href='/settings'">
+            <button class="user-avatar-btn" onclick="document.querySelector('.redirect-animation').style.animation = 'drop 1s ease-in-out forwards'; setTimeout(() => { document.querySelector('.redirect-animation').style.animation = 'none'; location.href='/settings'; }, 1000);">
                 <span class="user-avatar"></span>
             </button>
         </nav>
@@ -21,19 +21,40 @@
         <div class="sidebar">
             <div class="sidebar-header">
                 <input type="text" id="search" placeholder="Search..." class="sidebar-search">
-                <button class="sidebar-add-chat-btn" onclick="addChat()">+</button>
+                <button class="sidebar-add-chat-btn">+</button>
             </div>
 
-            <div class="chats">
-                <div class="chat-item">
-                    <img src="resources/authorPfp.png" class="chat-avatar">
-                    <h3 class="chat-name">raedh</h3>
-                    <p class="chat-role">admin</p>
-                </div>
-
+            <div class="sidebar-chats">
                 <div class="chats-no-chats-found">No chats here.</div>
             </div>
         </div>
+
+        <div class="main-content">
+            <div class="chat">
+                <div class="chat-header">
+                    <img src="resources/userpfps/userPfp.png" class="chat-header-avatar">
+                    <p class="chat-header-username">User</p>
+                    <p class="chat-header-role">user</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="add-chat-overlay">
+            <div class="add-chat-dialog">
+                <h2>Add New Chat</h2>
+                <div class="add-chat-dialog-error-box" style="display: none;">
+                    <p class="add-chat-dialog-error-box-text"></p>
+                </div>
+                <label for="other-user-uuid">Please enter the user's UUID:</label>
+                <input id="other-user-uuid" type="text" class="add-chat-input" autofocus />
+                <div class="add-chat-dialog-actions">
+                <button id="add-chat-cancel" class="add-chat-btn">Cancel</button>
+                <button id="add-chat-confirm" class="add-chat-btn">Add Chat</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="redirect-animation"></div>
     </main>
     <script src="resources/home.js"></script>
 </body>

@@ -165,6 +165,7 @@ body {
     height: 100%;
     transform: translate(-50%, -50%);
     background-color: #FFAD39;
+    z-index: 9999;
 }
 
 .nav-bar {
@@ -207,9 +208,7 @@ body {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    background: linear-gradient(90deg, #e67f00, #f1c40f, #e67f00, #f1c40f);
-    background-size: 400% 400%;
-    animation: avatarGradient 6s ease infinite;
+    background: transparent;
     color: #fff;
     font-weight: bold;
     font-size: 1.2rem;
@@ -266,6 +265,7 @@ body {
     font-size: large;
     border: #b9bbbe 2px solid;
     border-radius: 9px;
+    cursor: pointer;
 }
 
 .chat-item {
@@ -282,8 +282,8 @@ body {
 }
 
 .chat-avatar {
-    width: 40px;
-    height: 40px;
+    width: 38px;
+    height: 42px;
     border-radius: 50%;
     margin-right: 10px;
     background-color: #444;
@@ -371,7 +371,6 @@ body {
     background-color: #181818;
     color: #ffffff;
     border: none;
-    border-bottom: 1px solid #333;
     text-align: center;
     cursor: pointer;
     font-size: 1.05rem;
@@ -405,9 +404,7 @@ body {
     align-items: center;
     justify-content: center;
     margin-left: 28px;
-    background: linear-gradient(90deg, #e67f00, #f1c40f, #e67f00, #f1c40f);
-    background-size: 400% 400%;
-    animation: avatarGradient 6s ease infinite;
+    background: transparent;
     color: #fff;
     font-weight: bold;
     font-size: 1.2rem;
@@ -423,6 +420,157 @@ body {
     font-size: large;
     margin-top: -30px;
     margin-left: 79px;
+}
+
+.general-menu-role {
+    background-color: #35850094;
+    border: #358500 2px solid;
+    width: min-content;
+    border-radius: 34px;
+    padding: 2px 8px;
+    margin-top: -39px;
+    margin-left: 8px;
+    position: relative;
+    font-size: 12px;
+}
+
+.general-menu-btn {
+    padding: 12px;
+    margin: 24px 0 0 28px;
+    background-color: #e67f00;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    cursor: pointer;
+    box-shadow: 0 2px 8px #0002;
+    transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+}
+
+.general-menu-btn:hover {
+    background-color: #c26b00;
+    color: #fff;
+    box-shadow: 0 0 5px #FFAD39;
+}
+
+.add-chat-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0,0,0,0.5);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.add-chat-dialog {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #121212;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 16px rgba(0,0,0,0.2);
+    min-width: 320px;
+}
+
+.add-chat-dialog h2 {
+    color: #fff;
+    margin-bottom: 1rem;
+}
+
+.add-chat-dialog label {
+    color: #ccc;
+    font-size: 1rem;
+}
+
+.add-chat-dialog input {
+    width: 100%;
+    margin: 8px 0;
+    padding: 8px;
+    border-radius: 5px;
+    border: none;
+    background: #222;
+    color: #fff;
+}
+
+.add-chat-dialog input:focus {
+    outline: none;
+    box-shadow: 0 0 5px #FFAD39;
+    transition: all 0.2s ease-in-out;
+}
+
+.add-chat-dialog-actions {
+    width: 104%;
+    text-align: right;
+    margin-top: 4px;
+    margin-left: auto;
+}
+
+.add-chat-dialog button {
+    padding: 8px 18px;
+    border: none;
+    border-radius: 6px;
+    background: #e67f00;
+    color: #fff;
+    font-weight: 500;
+    margin-left: 4px;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.add-chat-dialog button:hover {
+    background: #c26b00;
+}
+
+.add-chat-dialog-error-box {
+    height: fit-content;
+    width: 102%;
+    margin: -5px 0 15px;
+    text-align: center;
+    padding: 1px;
+    background-color: #be0000;
+    border-radius: 9px;
+}
+
+.main-content {
+    position: fixed;
+    right: 0;
+    height: 100%;
+    width: 70%;
+}
+
+.chat-header {
+    position: fixed;
+    height: 10%;
+    width: 100%;
+    background-color: #181818;
+    display: flex;
+    align-items: center;
+}
+
+.chat-header-avatar {
+    width: 40px;
+    height: auto;
+    margin-left: 28px;
+}
+
+.chat-header-username {
+    margin-left: 18px;
+}
+
+.chat-header-role {
+    background-color: #35850094;
+    border: #358500 2px solid;
+    border-radius: 34px;
+    padding: 2px 8px;
+    margin-left: 12px;
+    font-size: 12px;
 }
 
 @keyframes loadingBarProgress {
@@ -466,37 +614,35 @@ body {
     }
 }
 
-@keyframes avatarGradient {
-    0% {
-        background-position: 0% 50%;
-    }
-    25% {
-        background-position: 50% 100%;
-    }
-    50% {
-        background-position: 100% 50%;
-    }
-    75% {
-        background-position: 50% 0%;
-    }
-    100% {
-        background-position: 0% 50%;
-    }
-}
-
 @keyframes drop {
-    0% {
+    from {
         position: absolute;
         top: -100%;
         left: 50%;
         transform: translate(-50%, -50%);
     }
-    100% {
+    to {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+}
+
+@keyframes afterDrop {
+    from {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+    to {
         position: absolute;
         top: 200%;
         left: 50%;
         transform: translate(-50%, -50%);
     }
+    
 }
 
 @keyframes fadeIn {

@@ -8,6 +8,11 @@ const errorBoxText = document.querySelector('.login-error-text');
 const loginButton = document.querySelector('.login-box-button');
 const redirectAnimation = document.querySelector('.redirect-animation');
 
+redirectAnimation.style.animation = 'afterDrop 1s ease-in-out forwards';
+setTimeout(() => {
+    redirectAnimation.style.animation = 'none';
+}, 1000);
+
 loginButton.addEventListener('click', () => {
     if (loginBoxUsername.value === '' || loginBoxPassword.value === '') {
         loginBox.style.height = '56%'
@@ -15,6 +20,7 @@ loginButton.addEventListener('click', () => {
         loginPageTitle.style.top = '24%';
         errorBox.style.display = 'block';
         errorBoxText.innerHTML = 'Please fill out all fields';
+        localStorage.setItem('loggedIn', 'false');
     } else {
         loginButton.disabled = true;
         loginButton.innerHTML = '<img src="resources/loading.png" style="background-color: transparent; height: 20px; width: auto;">';
@@ -43,12 +49,13 @@ loginButton.addEventListener('click', () => {
             const text = await res.text();
             if (res.ok) {
                 const redirectAnim = document.querySelector('.redirect-animation');
-                redirectAnim.style.animation = 'drop 2s ease-in-out forwards';
-                // Redirect when animation is 75% done (1.5s into 2s animation)
+                redirectAnim.style.animation = 'drop 1s ease-in-out forwards';
                 setTimeout(() => {
                     window.location.href = '/home';
                     localStorage.setItem('loggedIn', 'true');
                     localStorage.setItem('username', loginBoxUsername.value);
+                    localStorage.setItem('userUUID', JSON.parse(text).userUUID);
+                    localStorage.setItem('pfpPath', 'resources/userpfps/userPfp.png')
                 }, 1000);
             } else if (res.status === 404) {
                 loginButton.disabled = false;
@@ -65,6 +72,7 @@ loginButton.addEventListener('click', () => {
                 loginPageTitle.style.top = '29%';
                 errorBox.style.display = 'block';
                 errorBoxText.innerHTML = 'No account found.';
+                localStorage.setItem('loggedIn', 'false');
             }
         }, 500)
     }
