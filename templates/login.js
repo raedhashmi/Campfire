@@ -37,43 +37,47 @@ loginButton.addEventListener('click', () => {
         errorBox.style.display = 'none';
         setTimeout(async () => {
             const res = await fetch('/verify_login', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                username: loginBoxUsername.value,
-                password: loginBoxPassword.value
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    username: loginBoxUsername.value,
+                    password: loginBoxPassword.value
+                })
             })
-            });
-            const text = await res.text();
-            if (res.ok) {
-                const redirectAnim = document.querySelector('.redirect-animation');
-                redirectAnim.style.animation = 'drop 1s ease-in-out forwards';
-                setTimeout(() => {
-                    window.location.href = '/home';
-                    localStorage.setItem('loggedIn', 'true');
-                    localStorage.setItem('username', loginBoxUsername.value);
-                    localStorage.setItem('userUUID', JSON.parse(text).userUUID);
-                    localStorage.setItem('pfpPath', 'resources/userpfps/userPfp.png')
-                }, 1000);
-            } else if (res.status === 404) {
-                loginButton.disabled = false;
-                loginButton.style.cursor = 'pointer';
-                loginBoxUsername.disabled = false;
-                loginBoxPassword.disabled = false;
-                loginBoxUsername.style.cursor = 'text';
-                loginBoxPassword.style.cursor = 'text';
-                loginBoxUsername.style.backgroundColor = '#333';
-                loginBoxPassword.style.backgroundColor = '#333';
-                loginButton.innerHTML = 'Login';
-                loginBox.style.height = '56%'
-                loginPageIcon.style.top = '18%'
-                loginPageTitle.style.top = '29%';
-                errorBox.style.display = 'block';
-                errorBoxText.innerHTML = 'No account found.';
-                localStorage.setItem('loggedIn', 'false');
-            }
+            .then(res => res.json())
+            .then(res => {
+                if (res.status == 'success') {
+                    const redirectAnim = document.querySelector('.redirect-animation');
+                    redirectAnim.style.animation = 'drop 1s ease-in-out forwards';
+                    setTimeout(() => {
+                        window.location.href = '/home';
+                        localStorage.setItem('loggedIn', 'true');
+                        localStorage.setItem('username', loginBoxUsername.value);
+                        localStorage.setItem('userUUID', res.data.id)
+                        if (res.data.pfppath.replace('templates', 'resources') != null) {
+                            localStorage.setItem('pfpPath', `${res.data.pfppath.replace('templates', 'resources')}`)
+                        }
+                    }, 1000);
+                } else if (res.status === 404) {
+                    loginButton.disabled = false;
+                    loginButton.style.cursor = 'pointer';
+                    loginBoxUsername.disabled = false;
+                    loginBoxPassword.disabled = false;
+                    loginBoxUsername.style.cursor = 'text';
+                    loginBoxPassword.style.cursor = 'text';
+                    loginBoxUsername.style.backgroundColor = '#333';
+                    loginBoxPassword.style.backgroundColor = '#333';
+                    loginButton.innerHTML = 'Login';
+                    loginBox.style.height = '56%'
+                    loginPageIcon.style.top = '18%'
+                    loginPageTitle.style.top = '29%';
+                    errorBox.style.display = 'block';
+                    errorBoxText.innerHTML = 'No account found.';
+                    localStorage.setItem('loggedIn', 'false');
+                }
+            })
         }, 500)
     }
 });

@@ -5,6 +5,7 @@ body {
     margin: 0;
     padding: 0;
     font-family: Arial, sans-serif;
+    overflow: hidden;
 }
 
 .start-screen {
@@ -268,6 +269,10 @@ body {
     cursor: pointer;
 }
 
+.sidebar-chats {
+    overflow: visible;
+}
+
 .chat-item {
     display: flex;
     align-items: center;
@@ -307,11 +312,10 @@ body {
     font-size: 12px;
 }
 
-.chats-no-chats-found {
+.chats-no-chats-found, .select-chat-message {
     position: absolute;
     top: 50%;
     left: 50%;
-    display: none;
     transform: translate(-50%, -50%);
     color: #b9bbbe;
 }
@@ -399,11 +403,19 @@ body {
     margin-top: 32px;
 }
 
+.general-menu-user-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-left: 28px;
+    position: absolute;
+    left: 0;
+}
+
 .general-menu-user-avatar {
-    display: inline-flex;
+    display: flex;
     align-items: center;
     justify-content: center;
-    margin-left: 28px;
     background: transparent;
     color: #fff;
     font-weight: bold;
@@ -418,25 +430,23 @@ body {
 .general-menu-username {
     color: #fff;
     font-size: large;
-    margin-top: -30px;
-    margin-left: 79px;
+    margin: 0 8px 0 0;
 }
 
 .general-menu-role {
     background-color: #35850094;
     border: #358500 2px solid;
-    width: min-content;
     border-radius: 34px;
     padding: 2px 8px;
-    margin-top: -39px;
-    margin-left: 8px;
-    position: relative;
     font-size: 12px;
+    margin: 0;
+    width: auto;
+    position: relative;
 }
 
 .general-menu-btn {
     padding: 12px;
-    margin: 24px 0 0 28px;
+    margin: 54px 0 0 28px;
     background-color: #e67f00;
     color: #fff;
     border: none;
@@ -555,13 +565,23 @@ body {
 }
 
 .chat-header-avatar {
-    width: 40px;
-    height: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    color: #fff;
+    font-weight: bold;
+    font-size: 1.2rem;
+    width: 38px;
+    height: 38px;
     margin-left: 28px;
+    border-radius: 50%;
+    box-shadow: 0 2px 8px #0002;
+    user-select: none;
 }
 
 .chat-header-username {
-    margin-left: 18px;
+    margin-left: 8px;
 }
 
 .chat-header-role {
@@ -571,6 +591,77 @@ body {
     padding: 2px 8px;
     margin-left: 12px;
     font-size: 12px;
+}
+
+.chat-content {
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    height: 79%;
+    width: 70%;
+}
+
+.chat-send-message-input {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: block;
+    color: white;
+    height: 3%;
+    width: 96%;
+    margin: 0 0px -5px 0px;
+    padding: 12px;
+    background-color: #333;
+    border-radius: 9px;
+    border: none;
+}
+
+.chat-send-message-input:focus {
+    outline: none;
+    box-shadow: 0 0 5px #FFAD39;
+    transition: all 0.2s ease-in-out;
+}
+
+.send-message-btn {
+    position: absolute;
+    bottom: 3.7%;
+    right: 1.2%;
+    height: 6%;
+    width: 4.8%;
+    padding: 4px 4px 6px 4px;
+    background-color: #222;
+    border: none;
+    border-radius: 9px;
+    z-index: 2;
+}
+
+.send-message-btn:hover {
+    background-color: #e67f00;
+    box-shadow: 0 0 8px #FFAD39, 0 2px 8px #0002;
+    transition: background 0.2s, box-shadow 0.2s;
+}
+
+.chat-message-current-user {
+    display: block;
+    background-color: #333;
+    padding: 8px;
+    width: fit-content;
+    margin-top: 12px;
+    border-radius: 9px;
+    margin-left: auto;
+    margin-right: 12px;
+}
+
+.chat-message-other-user {
+    display: block;
+    background-color: #e67f00;
+    padding: 8px;
+    width: fit-content;
+    margin-top: 12px;
+    border-radius: 9px;
+    margin-left: 12px;
+    margin-right: auto;
 }
 
 @keyframes loadingBarProgress {

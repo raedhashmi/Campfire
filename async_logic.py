@@ -1,7 +1,7 @@
 from werkzeug.utils import secure_filename
 from prisma import Prisma
+from flask import jsonify
 import bcrypt
-import json
 import os
 
 db = Prisma()
@@ -31,9 +31,9 @@ async def verify_user(username: str, password: str):
     )
 
     if user and bcrypt.checkpw(password.encode('utf-8'), user.password.encode('utf-8')):
-        return 200, user.id
+        return 200, { "id": user.id, "pfppath": user.pfppath }
     else:
-        return 404
+        return 404, 'An error occoured'
 
 async def get_user_by_uuid(id: str):
     user = await db.users.find_first(
@@ -94,7 +94,7 @@ async def edit_password_by_uuid(id: str, new_password: str):
             "id": id
         },
         data={
-            "username": hashed_password
+            "password": hashed_password
         }
     )
 
@@ -130,35 +130,65 @@ async def add_chat(current_user_uuid: str, other_user_uuid: str):
     # Verify both users exist
     current_user = await get_user_by_uuid(current_user_uuid)
     other_user = await get_user_by_uuid(other_user_uuid)
-    if current_user is not None or other_user is not None:
+    if not current_user or not other_user:
         return 404, 'One or both users not found'
 
+    # Helper to update friend list string
+    async def update_friend_list(user_uuid, friend_uuid):
+        user = await db.users.find_first(where={"id": user_uuid})
+        friend_list_str = user.friendList if user and user.friendList else ""
+        friends = [f.strip() for f in friend_list_str.split(",") if f.strip()]
+        if friend_uuid not in friends:
+            friends.append(friend_uuid)
+        new_friend_list_str = ", ".join(friends)
+        await db.users.update(
+            where={"id": user_uuid},
+            data={"friendList": new_friend_list_str}
+        )
+
+    # Add each user to the other's friend list
+    await update_friend_list(current_user_uuid, other_user_uuid)
+    await update_friend_list(other_user_uuid, current_user_uuid)
+
+    # Fetch other user's info for return
     other_username, _ = await view_by_uuid(other_user_uuid, 'username')
     other_pfp, _ = await view_by_uuid(other_user_uuid, 'pfppath')
     other_role, _ = await view_by_uuid(other_user_uuid, 'role')
 
-    # Ensure friendList is a list (JSON field)
-    try:
-        current_friends = json.loads(current_user.friendList) if current_user.friendList else []
-    except Exception:
-        current_friends = []
-    try:
-        other_friends = json.loads(other_user.friendList) if other_user.friendList else []
-    except Exception:
-        other_friends = []
-
-    if other_user_uuid not in current_friends:
-        current_friends.append(other_user_uuid)
-    if current_user_uuid not in other_friends:
-        other_friends.append(current_user_uuid)
-
-    await db.users.update(
-        where={"id": current_user_uuid},
-        data={"friendList": json.dumps(current_friends)}
-    )
-    await db.users.update(
-        where={"id": other_user_uuid},
-        data={"friendList": json.dumps(other_friends)}
-    )
-
     return 200, other_username, other_pfp, other_role
+
+async def send_message(from_user: str, to_user: str, content: str):
+    message = await db.messages.create(
+        data={
+            "fromUser": from_user,
+            "toUser": to_user,
+            "content": content
+        }
+    )
+    if message:
+        return 200
+    else:
+        return 500
+    
+async def view_messages(currentUser: str, otherUser: str):
+    messages = await db.messages.find_many(
+        where={
+            "OR": [
+                {"fromUser": currentUser, "toUser": otherUser},
+                {"fromUser": otherUser, "toUser": currentUser}
+            ]
+        },
+        order={"id": "asc"}
+    )
+    if messages:
+        return 200, [
+            {
+                'messageID': msg.id,
+                'msgFrom': msg.fromUser,
+                'msgTo': msg.toUser,
+                'content': msg.content
+            }
+            for msg in messages
+        ]
+    else:
+        return 200, []

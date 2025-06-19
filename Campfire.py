@@ -1,12 +1,11 @@
 from flask import Flask, send_file, request, jsonify
-from async_logic import create_user_in_db, verify_user, connect_db, disconnect_db, view_by_uuid, delete_user_by_uuid, edit_username_by_uuid, edit_password_by_uuid, upload_pfp_logic, add_chat
+from async_logic import create_user_in_db, verify_user, connect_db, disconnect_db, view_by_uuid, delete_user_by_uuid, edit_username_by_uuid, edit_password_by_uuid, upload_pfp_logic, add_chat, send_message, view_messages
 import asyncio
 import time
 import os
 
 app = Flask(__name__)
 
-# Create a global loop once and stick with it
 loop = asyncio.new_event_loop()
 asyncio.set_event_loop(loop)
 loop.run_until_complete(connect_db())
@@ -29,11 +28,10 @@ def verify_login_route():
     username = data.get('username')
     password = data.get('password')
 
-    user = loop.run_until_complete(verify_user(username, password))
+    status_code, data = loop.run_until_complete(verify_user(username, password))
 
-    status_code, user_uuid = user
-    if status_code == 200 and user_uuid:
-        return jsonify({"status": "success", "userUUID": user_uuid}), 200
+    if status_code == 200:
+        return jsonify({"status": "success", "data": data}), 200
     else:
         return jsonify({"status": "error", "message": "Invalid username or password"}), 404
     
@@ -127,12 +125,40 @@ def add_chat_route():
     try:
         status, other_username, other_user_pfp, other_users_role = loop.run_until_complete(add_chat(current_user_uuid, other_user_uuid))
     except Exception as e:
+        print("Error: ", e)
         return jsonify({"status": "error", "message": "Invalid user UUID or internal error."}), 404
 
     if status == 200:
         return jsonify({"status": "success", "other_username": other_username, "other_users_pfp": other_user_pfp, "other_users_role": other_users_role}), 200
     else:
         return jsonify({"status": "error", "message": "An error occurred"}), 404
+
+@app.route('/send_message', methods=['POST'])
+def send_message_route():
+    data = request.get_json()
+    fromUser = data.get('from')
+    toUser = data.get('to')
+    content = data.get('content')
+
+    status = loop.run_until_complete(send_message(fromUser, toUser, content))
+
+    if status == 200:
+        return jsonify({'status': 'success'})
+    else:
+        return jsonify({'status': 'error'})
+
+@app.route('/view_messages', methods=['POST'])
+def view_message_route():
+    data = request.get_json()
+    currentUser = data.get('currentUser')
+    otherUser = data.get('otherUser')
+
+    status, data = loop.run_until_complete(view_messages(currentUser, otherUser))
+
+    if status == 200:
+        return jsonify({'status': 'success', 'data': data})
+    else: 
+        return jsonify({'status': 'error', 'data': data})
 
 if __name__ == '__main__':
     print("\033[38;5;208mLighting the Campfire...\033[0m")

@@ -14,7 +14,7 @@ model users {
   password    String
   pfppath     String
   role        String  @default("user")
-  friendList  Json?  
+  friendList  String?  
 }
 
 model messages {
