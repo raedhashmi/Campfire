@@ -25,7 +25,7 @@ if (loggedIn === 'false' || loggedIn == null) {
                 startScreen.style.animation = "fadeOut 0.2s ease-in-out";
                 setTimeout(() => {
                     if (loggedIn === 'true') {
-                        // User is logged in, do nothing (leave blank)
+                        
                     } else {
                         window.location.href = '/signup';
                     }

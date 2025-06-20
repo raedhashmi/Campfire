@@ -55,18 +55,14 @@ fetch('/view_by_uuid', {
 })
 
 function changeProfilePicture() {
-    // Create file input element
     const fileInput = document.createElement('input');
     fileInput.type = 'file';
     fileInput.accept = 'image/*';
-    // Trigger file selection
     fileInput.click();
 
-    // Handle file selection
     fileInput.onchange = () => {
         const file = fileInput.files[0];
         if (file) {
-            // Save the file to /resources/ with a unique name
             const formData = new FormData();
             const filename = `${uuid}_userPfp.png`;
             formData.append('file', file, filename);

@@ -13,7 +13,7 @@ async def disconnect_db():
     await db.disconnect()
 
 async def create_user_in_db(username: str, password: str):
-    hashed_password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')  # decode here
+    hashed_password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
     res = await db.users.create(
         data={
             'username': username,
@@ -127,13 +127,11 @@ async def upload_pfp_logic(uuid: str, file_storage) -> tuple:
         return 500, 'An error occoured'
 
 async def add_chat(current_user_uuid: str, other_user_uuid: str):
-    # Verify both users exist
     current_user = await get_user_by_uuid(current_user_uuid)
     other_user = await get_user_by_uuid(other_user_uuid)
     if not current_user or not other_user:
         return 404, 'One or both users not found'
 
-    # Helper to update friend list string
     async def update_friend_list(user_uuid, friend_uuid):
         user = await db.users.find_first(where={"id": user_uuid})
         friend_list_str = user.friendList if user and user.friendList else ""
@@ -146,11 +144,9 @@ async def add_chat(current_user_uuid: str, other_user_uuid: str):
             data={"friendList": new_friend_list_str}
         )
 
-    # Add each user to the other's friend list
     await update_friend_list(current_user_uuid, other_user_uuid)
     await update_friend_list(other_user_uuid, current_user_uuid)
 
-    # Fetch other user's info for return
     other_username, _ = await view_by_uuid(other_user_uuid, 'username')
     other_pfp, _ = await view_by_uuid(other_user_uuid, 'pfppath')
     other_role, _ = await view_by_uuid(other_user_uuid, 'role')

@@ -165,7 +165,6 @@ function addNewChat(friendUUID, other_username, other_users_pfp, other_users_rol
   `;
   chatList.appendChild(chatItem);
 
-  // Hide "no chats" message if present
   const noChatsMessage = document.querySelector('.chats-no-chats-found');
   if (noChatsMessage) noChatsMessage.style.display = 'none';
 }
@@ -191,7 +190,6 @@ async function renderChats() {
     noChatsMessage.style.display = 'none';
   }
 
-  // Split the comma-separated string into an array and trim whitespace
   friendList = friendList.split(',').map(f => f.trim()).filter(f => f);
 
   for (const friendUUID of friendList) {
@@ -203,7 +201,6 @@ async function renderChats() {
     const usernameData = await usernameRes.json();
     const friendUsername = usernameData.data;
 
-    // Fetch friend's pfpPath
     const pfpRes = await fetch('/view_by_uuid', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -245,11 +242,9 @@ async function renderChatMessages(current_user_uuid, other_user_uuid) {
       mainContent.appendChild(chatContent);
     }
 
-    // Remove only message divs, keep the input row
     const messageDivs = chatContent.querySelectorAll('.chat-message-current-user, .chat-message-other-user');
     messageDivs.forEach(div => div.remove());
 
-    // Render messages
     messages.forEach(msg => {
       const msgDiv = document.createElement('div');
       if (msg.msgFrom === uuid) {
