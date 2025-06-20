@@ -178,7 +178,7 @@ async def view_messages(currentUser: str, otherUser: str):
                 {"fromUser": otherUser, "toUser": currentUser}
             ]
         },
-        order={"id": "asc"}
+        order={"createdAt": "asc"}
     )
     if messages:
         return 200, [

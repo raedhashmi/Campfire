@@ -157,7 +157,7 @@ async function sendMessage() {
 function addNewChat(friendUUID, other_username, other_users_pfp, other_users_role) {
   const chatItem = document.createElement('div');
   chatItem.className = 'chat-item';
-  chatItem.onclick = () => openChat(friendUUID, other_users_pfp, other_username, other_users_role);
+  chatItem.onclick = () => openChat(friendUUID, other_users_pfp, other_username, other_users_role);;
   chatItem.innerHTML = `
     <img class='chat-avatar' src="${other_users_pfp}">
     <p class='chat-name'>${other_username}</p>
@@ -262,3 +262,9 @@ async function renderChatMessages(current_user_uuid, other_user_uuid) {
     });
   })
 }
+
+setInterval(() => {
+  if (uuid && currentChatFriendUUID) {
+    renderChatMessages(uuid, currentChatFriendUUID);
+  } 
+}, 1000);

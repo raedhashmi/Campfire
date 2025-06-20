@@ -18,8 +18,9 @@ model users {
 }
 
 model messages {
-  id        String  @id @default(uuid()) @db.Uuid
-  fromUser  String  
+  id        String   @id @default(uuid()) @db.Uuid
+  fromUser  String
   toUser    String
   content   String
+  createdAt DateTime @default(now())
 }
