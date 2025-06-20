@@ -149,7 +149,6 @@ async function sendMessage() {
       })
     });
     messageInput.value = '';
-    renderChatMessages()
   } catch (err) {
     alert('Failed to send message.');
   }
