@@ -9,6 +9,7 @@ const searchBar = document.querySelector('.sidebar-search');
 const mainContent = document.querySelector('.main-content');
 const chatList = document.querySelector('.sidebar-chats');
 const chatItems = document.querySelectorAll('.chat-item');
+let chatContent = document.querySelector('.chat-content');
 const loggedIn = localStorage.getItem('loggedIn');
 const uuid = localStorage.getItem('userUUID');
 let currentChatFriendUUID = null;
@@ -235,16 +236,10 @@ async function renderChatMessages(current_user_uuid, other_user_uuid) {
   .then(res => res.json())
   .then(res => {
     const messages = res.data || [];
-    let chatContent = mainContent.querySelector('.chat-content');
-    if (!chatContent) {
-      chatContent = document.createElement('div');
-      chatContent.className = 'chat-content';
-      mainContent.appendChild(chatContent);
-    }
 
     const messageDivs = chatContent.querySelectorAll('.chat-message-current-user, .chat-message-other-user');
-    messageDivs.forEach(div => div.remove());
 
+    messageDivs.forEach(div => div.remove());
     messages.forEach(msg => {
       const msgDiv = document.createElement('div');
       if (msg.msgFrom === uuid) {
@@ -262,4 +257,4 @@ setInterval(() => {
   if (uuid && currentChatFriendUUID) {
     renderChatMessages(uuid, currentChatFriendUUID);
   } 
-}, 1000);
+}, 5000);
